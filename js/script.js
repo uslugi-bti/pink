@@ -277,4 +277,77 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         });
     }
+
+    if (document.querySelector(".product-page")) {
+        const tabsTitle = document.querySelectorAll(".product-body-characteristics__title");
+        const tabsBody = document.querySelectorAll(".product-body-characteristics__body");
+        const tabOutput = document.querySelector(".product-body-characteristics__output");
+
+        function activeTabs() {
+            for (let i = 0; i < tabsTitle.length; i++) {
+                tabsTitle[i].addEventListener("click", function () {
+                    const viewport_width = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
+                    if (viewport_width >= 1100) {
+                        for (let i = 0; i < tabsTitle.length; i++) {
+                            tabsTitle[i].classList.remove("active");
+                        }
+                        tabsTitle[i].classList.add("active");
+                        if (tabOutput.querySelector(".product-body-characteristics__output .product-body-characteristics__body")) {
+                            tabOutput.querySelector(".product-body-characteristics__output .product-body-characteristics__body").remove();
+                        }
+                        const clone = tabsBody[i].cloneNode(true);
+                        tabOutput.insertBefore(clone, tabOutput.children[0]);
+                    } else {
+                        if (tabsTitle[i].classList.contains("open")) {
+                            tabsBody[i].classList.remove("open");
+                            tabsTitle[i].classList.remove("open");
+                        } else {
+                            for (let i = 0; i < tabsTitle.length; i++) {
+                                tabsBody[i].classList.remove("open");
+                                tabsTitle[i].classList.remove("open");
+                            }
+                            tabsBody[i].classList.add("open");
+                            tabsTitle[i].classList.add("open");
+                        }
+                    }
+                });
+            }
+        }
+        tabsTitle[0].classList.add("active");
+        const clone = tabsBody[0].cloneNode(true);
+        tabOutput.insertBefore(clone, tabOutput.children[0]);
+        activeTabs();
+        window.addEventListener("resize", activeTabs);
+    }
+
+    if (document.querySelector(".product-page")) {
+        const productBlock = document.querySelector(".product>.container");
+        const productBreadcrump = document.querySelector(".product-page .breadcrump");
+        const productBodyBody = document.querySelector(".product-body__body");
+        const productRating = document.querySelector(".product-body__body>.product-body__rate");
+        const productFeedNum = document.querySelector(".addfeed__text");
+        const addfeedBody = document.querySelector(".addfeed__body");
+        const addfeedRateTitle = document.querySelector(".addfeed-rate__title");
+        const addfeedRate = document.querySelector(".addfeed__rate");
+        const feedbacksBody = document.querySelector(".feedbacks__body");
+        const feedbacksContainer = document.querySelector(".feedbacks>.container");
+        const bodyCharacteristicsBody = document.querySelector(".product-body-characteristics__body.feedbacks");
+
+        function moveBreadcrump() {
+            const viewport_width = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
+            if (viewport_width < 767) {
+                productBlock.insertBefore(productBreadcrump, productBlock.children[0]);
+                productRating.insertBefore(productFeedNum, productRating.children[5]);
+                productBodyBody.insertBefore(addfeedRateTitle, productBodyBody.children[2]);
+                bodyCharacteristicsBody.insertBefore(feedbacksBody, bodyCharacteristicsBody.children[0]);
+            } else {
+                productBodyBody.insertBefore(productBreadcrump, productBodyBody.children[0]);
+                addfeedBody.insertBefore(productFeedNum, addfeedBody.children[1]);
+                addfeedRate.insertBefore(addfeedRateTitle, addfeedRate.children[0]);
+                feedbacksContainer.insertBefore(feedbacksBody, feedbacksContainer.children[1]);
+            }
+        }
+        moveBreadcrump();
+        window.addEventListener("resize", moveBreadcrump);
+    }
 });
